@@ -1,0 +1,52 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+
+public class InsertRecord {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+			try {
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","system","5698");
+				
+				//insert record using prepared statement
+				PreparedStatement ps=con.prepareStatement("insert into emp values(?,?,?)");
+				BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+				while(true) {
+					System.out.println("Enter Emp id");
+					int eno=Integer.parseInt(br.readLine());
+					System.out.println("enter emp name");
+					String ename=br.readLine();
+					System.out.println("enter salary");
+					double esal=Double.parseDouble(br.readLine());
+					
+					ps.setInt(1, eno);
+					ps.setString(2, ename);
+					ps.setDouble(3, esal);
+					
+					int count=ps.executeUpdate();
+					if(count>0) {System.out.println(count+" record inserted");}
+					else System.out.println("no record");
+					
+					System.out.println("Do you want more more record");
+					String ch=br.readLine();
+					if(ch.equalsIgnoreCase("yes")) {
+						break;
+				}
+				
+				
+				}catch (Exception e) {
+				// TODO Auto-generated catch block
+				System.out.println(e);
+			}
+
+	
+
+	
+	}
+}
+}
